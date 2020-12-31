@@ -10,7 +10,7 @@ const char mimePlain[] PROGMEM = "text/plain";
 const char mimeCSS[] PROGMEM = "text/css";
 const char mimeJS[] PROGMEM = "application/javascript";
 
-bool DEBUG_MODE = false;
+bool DEBUG_MODE_WIFI = false;
 
 //
 // Setup and Loop
@@ -453,18 +453,18 @@ void ConfigManager::createBaseWebServer() {
 }
 
 void ConfigManager::streamFile(const char* file, const char mime[]) {
-  SPIFFS.begin();
+  LittleFS.begin();
 
   File f;
 
   if (file[0] == '/') {
-    f = SPIFFS.open(file, "r");
+    f = LittleFS.open(file, "r");
   } else {
     size_t len = strlen(file);
     char filepath[len+1];
     strcpy(filepath, "/");
     strcat(filepath, file);
-    f = SPIFFS.open(filepath, "r");
+    f = LittleFS.open(filepath, "r");
   }
 
   if (f) {
@@ -507,6 +507,10 @@ void ConfigManager::handleAPPost() {
   storeWifiSettings(ssid, password);
 
   server->send(204, FPSTR(mimePlain), F("Saved. Will attempt to reboot."));
+
+  DebugPrint(F("Saved. Will attempt to reboot."));
+
+  delay(500); // wait for the request to be sent
 
   ESP.restart();
 }

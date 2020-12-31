@@ -3,7 +3,7 @@
 
 #include <DNSServer.h>
 #include <EEPROM.h>
-#include <FS.h>
+#include <LittleFS.h>
 
 #if defined(ARDUINO_ARCH_ESP8266)  // ESP8266
 #include <ESP8266WebServer.h>
@@ -33,10 +33,10 @@ using WebServer = ESP8266WebServer;
 // MAGIC_LENGTH + SSID_LENGTH + PASSWORD_LENGTH
 #define CONFIG_OFFSET 98
 
-extern bool DEBUG_MODE;
+extern bool DEBUG_MODE_WIFI;
 
-#define DebugPrint(a) (DEBUG_MODE ? Serial.print(a) : false)
-#define DebugPrintln(a) (DEBUG_MODE ? Serial.println(a) : false)
+#define DebugPrint(a) (DEBUG_MODE_WIFI ? Serial.print(a) : false)
+#define DebugPrintln(a) (DEBUG_MODE_WIFI ? Serial.println(a) : false)
 
 extern const char mimeHTML[];
 extern const char mimeJSON[];
